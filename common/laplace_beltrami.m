@@ -24,8 +24,8 @@
 %   Proceedings. IEEE, 2004.
 %
 %% Syntax
-%   A = laplace_beltrami(face,vertex)
-%   A = laplace_beltrami(face,vertex,method)
+%   A = laplace_beltrami(mesh)
+%   A = laplace_beltrami(mesh, method)
 %
 %% Description
 %  face  : double array, nf x 3, connectivity of mesh
@@ -36,10 +36,10 @@
 %  A: sparse matrix, nv x nv, Laplace Beltrami operator
 %
 %% Example
-%   A = laplace_beltrami(face,vertex)
-%   A = laplace_beltrami(face,vertex,'Polthier') % same as last 
-%   A = laplace_beltrami(face,vertex,'Meyer')
-%   A = laplace_beltrami(face,vertex,'Desbrun')
+%   A = laplace_beltrami(mesh)
+%   A = laplace_beltrami(mesh,'Polthier') % same as last 
+%   A = laplace_beltrami(mesh,'Meyer')
+%   A = laplace_beltrami(mesh,'Desbrun')
 %
 %% Contribution
 %  Author : Wen Cheng Feng
@@ -53,22 +53,19 @@
 %  Department of Mathematics, CUHK
 %  http://www.math.cuhk.edu.hk/~lmlui
 
-function A = laplace_beltrami(face,vertex,method)
+function A = laplace_beltrami(mesh, method)
 % default method is 'Polthier'
-if nargin == 2
+if nargin == 1
     method = 'Polthier';
 end
-[edge,eif] = compute_edge(face);
-ne = size(edge,1);
-ew = zeros(ne,1);
-ind = eif(:,1)>0;
-ev1 = sum(face(eif(ind,1),:),2) - sum(edge(ind,:),2);
-ct1 = cot2(vertex(ev1,:),vertex(edge(ind,1),:),vertex(edge(ind,2),:));
-ew(ind) = ew(ind) + ct1;
-ind = eif(:,2)>0;
-ev2 = sum(face(eif(ind,2),:),2) - sum(edge(ind,:),2);
-ct2 = cot2(vertex(ev2,:),vertex(edge(ind,1),:),vertex(edge(ind,2),:));
-ew(ind) = ew(ind) + ct2;
+face = mesh.face;
+edge = mesh.edge;
+vert = mesh.vert;
+if ~isfield(mesh,'ew')
+    ew = edge_weight(mesh);
+else
+    ew = mesh.ew;
+end
 
 switch method
     case 'Polthier'
@@ -76,28 +73,17 @@ switch method
         sA = sum(A,2);
         A = A - diag(sA);
     case 'Meyer'
-        va = vertex_area(face,vertex,'mixed');
+        va = vertex_area(face,vert,'mixed');
         ew = (ew./va(edge(:,1))+ew./va(edge(:,2)))/2;
         A = sparse([edge(:,1);edge(:,2)],[edge(:,2);edge(:,1)],[ew;ew]);
         sA = sum(A,2);
         A = A - diag(sA);
     case 'Desbrun'
-        va = vertex_area(face,vertex,'one_ring');
+        va = vertex_area(face,vert,'one_ring');
         ew = (ew./va(edge(:,1))+ew./va(edge(:,2)))/2*3;
         A = sparse([edge(:,1);edge(:,2)],[edge(:,2);edge(:,1)],[ew;ew]);
         sA = sum(A,2);
         A = A - diag(sA);
     otherwise
-        error('Wrong method. Available methods are: Polthier,Meyer,Desbrun.')
+        error('Wrong method. Available methods are: Polthier, Meyer, Desbrun')
 end
-
-function ct = cot2(pi,pj,pk)
-a = sqrt(dot(pj-pk,pj-pk,2));
-b = sqrt(dot(pk-pi,pk-pi,2));
-c = sqrt(dot(pi-pj,pi-pj,2));
-cs = (b.*b+c.*c-a.*a)./(2.*b.*c);
-ss2 = 1-cs.*cs;
-ss2(ss2<0) = 0;
-ss2(ss2>1) = 1;
-ss = sqrt(ss2);
-ct = cs./ss;
