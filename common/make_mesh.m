@@ -1,7 +1,7 @@
 function mesh = make_mesh(face, vert)
 
-[edge,eif] = compute_edge(face);
-[he,heif] = halfedge(face);
+[edge,eif] = edges(face);
+[he,heif] = halfedges(face);
 
 nf = size(face,1);
 nv = size(vert,1);

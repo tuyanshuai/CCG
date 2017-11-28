@@ -62,7 +62,7 @@ L(1,1) = L(1,1)-1;
 h = -L\delta_w;
 dh = exterior_derivative(mesh,h,0);
 % dh is closed harmonic one form
-dh = w + dh/2;
+dh = w + dh;
 % integrate df + 1i*dh
 des = sparse(edge(:,1),edge(:,2),dh,nv,nv);
 des = des - conj(des');

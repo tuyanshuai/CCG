@@ -4,7 +4,7 @@
 % vector indicate which face the halfedge belongs to.
 %
 %% Syntax
-%   [he,heif] = compute_halfedge(face)
+%   [he,heif] = halfedges(face)
 %
 %% Description
 %  face: double array, nf x 3, connectivity of mesh
@@ -21,7 +21,7 @@
 %  Department of Mathematics, CUHK
 %  http://www.math.cuhk.edu.hk/~lmlui
 
-function [he,heif] = halfedge(face)
+function [he,heif] = halfedges(face)
 nf = size(face,1);
 he = [reshape(face',nf*3,1),reshape(face(:,[2 3 1])',nf*3,1)];
 heif = reshape(repmat(1:nf,[3,1]),nf*3,1);

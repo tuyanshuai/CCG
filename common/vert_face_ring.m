@@ -49,7 +49,8 @@ if ~exist('ordered','var')
     ordered = false;
 end
 vr = vert_vert_ring(mesh,vc,ordered);
-[he,heif] = halfedge(mesh.face);
+he = mesh.halfedge;
+heif = mesh.heif;
 eifs = sparse(he(:,1),he(:,2),heif);
 vfr = arrayfun(@(i) full(eifs(vr{i}+nv*(vc(i)-1))),(1:length(vc))','UniformOutput',false);
 vfr = cellfun(@(vi) vi(vi>0),vfr,'UniformOutput',false);
