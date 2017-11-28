@@ -11,15 +11,16 @@ ne = size(edge,1);
 ew = zeros(ne,1);
 
 % ev1 is the third vert in a triangle: v3 = (v1+v2+v3) - (v1+v2)
-ind = eif(:,1)>0;
-ev1 = sum(face(eif(ind,1),:),2) - sum(edge(ind,:),2);
-ct1 = cot2(vert(ev1,:),vert(edge(ind,1),:),vert(edge(ind,2),:));
-ew(ind) = ew(ind) + ct1;
+ind1 = eif(:,1)>0;
+ev1 = sum(face(eif(ind1,1),:),2) - sum(edge(ind1,:),2);
+ct1 = cot2(vert(ev1,:),vert(edge(ind1,1),:),vert(edge(ind1,2),:));
+ew(ind1) = ew(ind1) + ct1;
 % ev2 is similar to ev1
-ind = eif(:,2)>0;
-ev2 = sum(face(eif(ind,2),:),2) - sum(edge(ind,:),2);
-ct2 = cot2(vert(ev2,:),vert(edge(ind,1),:),vert(edge(ind,2),:));
-ew(ind) = ew(ind) + ct2;
+ind2 = eif(:,2)>0;
+ev2 = sum(face(eif(ind2,2),:),2) - sum(edge(ind2,:),2);
+ct2 = cot2(vert(ev2,:),vert(edge(ind2,1),:),vert(edge(ind2,2),:));
+ew(ind2) = ew(ind2) + ct2;
+ew(ind1&ind2) = ew(ind1&ind2)/2;
 % store ew for later use
 mesh.ew = ew;
 

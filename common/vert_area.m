@@ -7,20 +7,20 @@
 %   Berlin Heidelberg, 2003. 35-57.
 %
 %% Syntax
-%   va = vertex_area(face,vertex)
-%   va = vertex_area(face,vertex,type)
+%   va = vert_area(face,vertex)
+%   va = vert_area(face,vertex,type)
 %
 %% Description
-%  face  : double array, nf x 3, connectivity of mesh
-%  vertex: double array, nv x 3, vertex of mesh
-%  type  : string, area type, either "one_ring", or "mixed"
+%  face: double array, nf x 3, connectivity of mesh
+%  vert: double array, nv x 3, vertex of mesh
+%  type: string, area type, either "one_ring", or "mixed"
 % 
 %  va: double array, nv x 1, area of all vertex.
 % 
 %% Example
-%   va = vertex_area(face,vertex)
-%   va = vertex_area(face,vertex,'one_ring') % same as last
-%   va = vertex_area(face,vertex,'mixed')
+%   va = vert_area(face,vertex)
+%   va = vert_area(face,vertex,'one_ring') % same as last
+%   va = vert_area(face,vertex,'mixed')
 
 %% Contribution
 %  Author : Wen Cheng Feng
@@ -31,7 +31,7 @@
 %  Department of Mathematics, CUHK
 %  http://www.math.cuhk.edu.hk/~lmlui
 
-function va = vertex_area(face,vert,type)
+function va = vert_area(face,vert,type)
 if ~exist('type','var')
     type = 'one_ring';
 end

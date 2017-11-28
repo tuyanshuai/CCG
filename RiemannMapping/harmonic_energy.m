@@ -9,4 +9,4 @@ else
 end
 % harmonic energy
 df = f(edge(:,2),:)-f(edge(:,1),:);
-E = ew.*dot(df,df,2);
+E = sum(ew.*dot(df,df,2))/2;

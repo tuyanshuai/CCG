@@ -1,4 +1,4 @@
-%% compute_vertex_ring 
+%% vert_vert_ring 
 % Compute one-ring neighbor of given vertex or all vertex, with or 
 % without ccw order. Default is no order.
 % 
@@ -7,9 +7,9 @@
 % compute with order only absolutely necessary.
 %
 %% Syntax
-%   vr = compute_vertex_ring(face)
-%   vr = compute_vertex_ring(face,vc)
-%   vr = compute_vertex_ring(face,vc,ordered)
+%   vr = vert_vert_ring(face)
+%   vr = vert_vert_ring(face,vc)
+%   vr = vert_vert_ring(face,vc,ordered)
 %
 %% Description
 %  face: double array, nf x 3, connectivity of mesh
@@ -22,19 +22,19 @@
 %
 %% Example
 %   % compute one ring of all vertex, without order
-%   vr = compute_vertex_ring(face)
+%   vr = vert_vert_ring(face)
 % 
 %   % compute one ring of vertex 1:100, without ccw order
-%   vr = compute_vertex_ring(face,1:100,false)
+%   vr = vert_vert_ring(face,1:100,false)
 % 
 %   % compute one ring of vertex 1:100, with ccw order
-%   vr = compute_vertex_ring(face,1:100,true)
+%   vr = vert_vert_ring(face,1:100,true)
 % 
 %   % compute one ring of all vertex, with ccw order (may be slow)
-%   vr = compute_vertex_ring(face,[],ordered)
+%   vr = vert_vert_ring(face,[],ordered)
 % 
 %   % same with last one
-%   vr = compute_vertex_ring(face,1:nv,ordered)
+%   vr = vert_vert_ring(face,1:nv,ordered)
 %
 %% Contribution
 %  Author : Wen Cheng Feng
@@ -45,7 +45,7 @@
 %  Department of Mathematics, CUHK
 %  http://www.math.cuhk.edu.hk/~lmlui
 
-function vr = vertex_vertex_ring(mesh,vc,ordered)
+function vr = vert_vert_ring(mesh,vc,ordered)
 % number of vertex, assume face are numbered from 1, and in consecutive
 % order
 nv = mesh.nv;
@@ -56,9 +56,15 @@ if ~exist('ordered','var')
     ordered = false;
 end
 vr = cell(size(vc));
-bd = boundary(mesh.face);
+bds = boundary(mesh.face);
 isbd = false(nv,1);
-isbd(bd) = true;
+if iscell(bds)
+    for i = 1:length(bds)
+        isbd(bds{i}) = true;
+    end
+else
+    isbd(bds) = true;
+end
 if ~ordered
     [am,~] = adjacency_matrix(mesh.face);
     [I,J,~] = find(am(:,vc));

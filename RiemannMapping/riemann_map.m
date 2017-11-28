@@ -4,7 +4,7 @@ function uv = riemann_map(mesh)
 % first find a central triangle and remove it, remaining mesh becomes 
 % topological annulus, with same vertex set
 iv = center(mesh);
-vfr = vertex_face_ring(mesh,iv);
+vfr = vert_face_ring(mesh,iv);
 ivf = vfr{1};
 ind = true(mesh.nf,1);
 ind(ivf(1)) = false;

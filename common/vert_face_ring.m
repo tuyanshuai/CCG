@@ -3,9 +3,9 @@
 % without ccw order. Default is no order, based on vertex_ring
 %
 %% Syntax
-%   vfr = compute_vertex_face_ring(face)
-%   vfr = compute_vertex_face_ring(face,vc)
-%   vfr = compute_vertex_face_ring(face,vc,ordered)
+%   vfr = vert_face_ring(face)
+%   vfr = vert_face_ring(face,vc)
+%   vfr = vert_face_ring(face,vc,ordered)
 %
 %% Description
 %  face: double array, nf x 3, connectivity of mesh
@@ -18,19 +18,19 @@
 %
 %% Example
 %   % compute one ring of all vertex, without order
-%   vfr = compute_vertex_face_ring(face)
+%   vfr = vert_face_ring(face)
 % 
 %   % compute one ring of vertex 1:100, without ccw order
-%   vfr = compute_vertex_face_ring(face,1:100,false)
+%   vfr = vert_face_ring(face,1:100,false)
 %
 %   % compute one ring of vertex 1:100, with ccw order
-%   vfr = compute_vertex_face_ring(face,1:100,true)
+%   vfr = vert_face_ring(face,1:100,true)
 % 
 %   % compute one ring of all vertex, with ccw order (may be slow)
-%   vfr = compute_vertex_face_ring(face,[],true)
+%   vfr = vert_face_ring(face,[],true)
 % 
 %   % same with last one
-%   vfr = compute_vertex_face_ring(face,1:nv,true)
+%   vfr = vert_face_ring(face,1:nv,true)
 %
 %% Contribution
 %  Author : Wen Cheng Feng
@@ -40,7 +40,7 @@
 %  Department of Mathematics, CUHK
 %  http://www.math.cuhk.edu.hk/~lmlui
 
-function vfr = vertex_face_ring(mesh,vc,ordered)
+function vfr = vert_face_ring(mesh,vc,ordered)
 nv = max(max(mesh.face));
 if ~exist('vc','var') || isempty(vc)
 	vc = (1:nv)';
@@ -48,7 +48,7 @@ end
 if ~exist('ordered','var')
     ordered = false;
 end
-vr = vertex_vertex_ring(mesh,vc,ordered);
+vr = vert_vert_ring(mesh,vc,ordered);
 [he,heif] = halfedge(mesh.face);
 eifs = sparse(he(:,1),he(:,2),heif);
 vfr = arrayfun(@(i) full(eifs(vr{i}+nv*(vc(i)-1))),(1:length(vc))','UniformOutput',false);
