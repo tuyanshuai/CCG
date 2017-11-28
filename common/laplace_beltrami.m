@@ -13,10 +13,10 @@
 %   Proc. of the Clay Summer School on Global Theory of Minimal Surfaces, 
 %   J. Hass, D. Hoffman, A. Jaffe, H. Rosenberg, R. Schoen, M. Wolf (Eds.), 
 %   to appear, 2002.
-% # M. Meyer, M. Desbrun, P. Schr�der, and A. Barr. Discrete 
+% # M. Meyer, M. Desbrun, P. Schröder, and A. Barr. Discrete 
 %   Differential-Geometry Operator for Triangulated 2-manifolds. In Proc. 
 %   VisMath'02, Berlin, Germany, 2002.
-% # M. Desbrun, M. Meyer, P. Schr�der, and A. H. Barr. Implicit Fairing 
+% # M. Desbrun, M. Meyer, P. Schröder, and A. H. Barr. Implicit Fairing 
 %   of Irregular Meshes using Diffusion and Curvature Flow. SIGGRAPH99, 
 %   pages 317-324, 1999.
 % # Xu, Guoliang. "Convergent discrete laplace-beltrami operators over 
