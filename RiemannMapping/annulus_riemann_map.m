@@ -10,7 +10,7 @@ nf = mesh.nf;
 ne = mesh.ne;
 nv = mesh.nv;
 % compute harmonic function f with fixed value on two boundaries of annulus
-% f(b1) = 0, f(b2) = 1
+% f(b1) = 1, f(b2) = 0
 bds = boundary(face);
 b1 = bds{1};
 b2 = bds{2};
@@ -22,7 +22,6 @@ f = nan(mesh.nv,1);
 f(b1) = 1;
 f(b2) = 0;
 f = harmonic_function(mesh, f);
-E = harmonic_energy(mesh, f);
 df = exterior_derivative(mesh,f,0);
 % find a shortest path between two boundaries b1,b2
 cc = shortest_path(mesh,[b1(1),b2(1)]);
@@ -44,7 +43,8 @@ indf(eif(indf2==1&ind1,1)) = 1;
 indf(eif(indf2==1&ind2,2)) = 1;
 indf(eif(indf2==-1&ind1,1)) = -1;
 indf(eif(indf2==-1&ind2,2)) = -1;
-% define g on open surface, dg 
+% define g on open surface, w = dg is closed one form and can be defined on
+% original closed surface
 g = rand(nv,1);
 g(cc) = 0;
 w = exterior_derivative(mesh,g,0);
@@ -54,15 +54,10 @@ inde = zeros(ne,1);
 inde(ind1) = inde(ind1) + indf(eif(ind1,1));
 inde(ind2) = inde(ind2) + indf(eif(ind2,2));
 inde = inde>0;
-w(inde) = g(edge(inde,2))-g(edge(inde,1));
-% delta(w)
-delta_w = exterior_co_derivative(mesh,w,1);
-L = laplace_beltrami(mesh);
-L(1,1) = L(1,1)-1;
-h = -L\delta_w;
-dh = exterior_derivative(mesh,h,0);
-% dh is closed harmonic one form
-dh = w + dh;
+w(inde) = g(edge(inde,2)) - g(edge(inde,1));
+% w is closed one form, find harmonic one form dh in the homological class
+% of w
+dh = harmonic_form(mesh, w);
 % integrate df + 1i*dh
 des = sparse(edge(:,1),edge(:,2),dh,nv,nv);
 des = des - conj(des');
