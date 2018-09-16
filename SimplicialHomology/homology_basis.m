@@ -25,10 +25,11 @@
 %  Copyright 2014 Computational Geometry Group
 %  Department of Mathematics, CUHK
 %  http://www.math.cuhk.edu.hk/~lmlui
-
-function hb = compute_homology_basis(face,vertex)
-ee = cut_graph(face,vertex);
-nv = size(vertex,1);
+function hb = homology_basis(mesh)
+face = mesh.face;
+vert = mesh.vert;
+ee = cut_graph(face,vert);
+nv = size(vert,1);
 G = sparse(ee(:,1),ee(:,2),ones(size(ee,1),1),nv,nv);
 G = G+G';
 
@@ -46,9 +47,6 @@ for i = 1:size(eh,1)
     p2 = trace_path(pred,eh(i,2),v);
     loop = [flipud(p1);eh(i,1);eh(i,2);p2];
     hb{i} = prune_path(loop);
-end
-if isempty(eh)
-    hb = [];
 end
 
 function path = trace_path(pred,v,root)
