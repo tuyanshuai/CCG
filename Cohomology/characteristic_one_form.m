@@ -7,7 +7,7 @@ for i = 1:length(hb)
     % slice mesh open along basis hb{i}
     bi = hb{i};
     ee = [bi,bi([2:end,1])];
-    mesh2 = slice_mesh2(mesh,ee);
+    mesh2 = slice_mesh(mesh,ee);
     % construct f
     f2 = rand(mesh2.nv,1);
     bd2 = boundary(mesh2.face);
