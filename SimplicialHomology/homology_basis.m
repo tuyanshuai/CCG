@@ -1,4 +1,4 @@
-%% compute homology basis 
+%% homology basis 
 % Compute a basis for the homology group H_1(M,Z), based on the algorithm
 % 6 in book [1].
 %  
@@ -6,11 +6,10 @@
 %   geometry. Vol. 3. Somerville: International Press, 2008.
 %
 %% Syntax
-%   hb = compute_homology_basis(face,vertex)
+%   hb = homology_basis(mesh)
 %
 %% Description
-%  face  : double array, nf x 3, connectivity of mesh
-%  vertex: double array, nv x 3, vertex of mesh
+%  mesh: mesh structure
 %
 %  hb: cell array, n x 1, a basis of homology group, each cell is a closed 
 %      loop based. Return empty for genus zero surface. Two loops on each
@@ -21,25 +20,20 @@
 %  Author : Wen Cheng Feng
 %  Created: 2014/03/13
 %  Revised: 2014/03/24 by Wen, add doc
+%  Revised: 2018/09/16 by Wen, simplify code
 % 
 %  Copyright 2014 Computational Geometry Group
 %  Department of Mathematics, CUHK
 %  http://www.math.cuhk.edu.hk/~lmlui
 function hb = homology_basis(mesh)
 face = mesh.face;
-vert = mesh.vert;
-ee = cut_graph(face,vert);
-nv = size(vert,1);
-G = sparse(ee(:,1),ee(:,2),ones(size(ee,1),1),nv,nv);
-G = G+G';
-
-if exist('graphminspantree')
-    [tree,pred] = graphminspantree(G,'METHOD','Kruskal');
-else
-    [tree,pred] = minimum_spanning_tree(G);
-end
-v = find(pred==0);
-[I,J,~] = find(tree+tree');
+ee = cut_graph(face);
+G = graph(ee(:,1),ee(:,2));
+[tree,pred] = minspantree(G,'Type','forest','Root',ee(1));
+v = ee(1);
+tree_edges = table2array(tree.Edges);
+I = [tree_edges(:,1);tree_edges(:,2)];
+J = [tree_edges(:,2);tree_edges(:,1)];
 eh = setdiff(ee,[I,J],'rows');
 hb = cell(size(eh,1),1);
 for i = 1:size(eh,1)
