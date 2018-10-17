@@ -1,0 +1,18 @@
+function hf = holomorphic_one_form(mesh, cf)
+if ~exist('cf','var') || isempty(cf)
+    cf = characteristic_one_form(mesh);
+end
+hf = cell(size(cf));
+for i = 1:length(hf)
+    w = harmonic_form(mesh, cf{i});
+    % compute vector representation;
+    vector_w = vector_representation(w);
+    fnormal = face_normal(mesh.face, mesh.vert);
+    % rotate by 90 degrees;
+    dual_w = cross(face_normal, vector_w);
+    farea = face_area(mesh.face, mesh.vert);
+    s = s + dot(cross(vector_w, dual_w), fnormal, 2).*farea;
+    
+    % build a linear system;
+    
+end
