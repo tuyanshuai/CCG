@@ -33,7 +33,7 @@ end
 
 fid = fopen(filename,'wt');
 if( fid==-1 )
-    error('Can''t open the file.');    
+    error('Can''t open the file.');
 end
 
 nvert = size(vertex, 1);
@@ -49,23 +49,20 @@ fprintf (fid, 'OFF\n');
 fprintf (fid, '%d %d %d\n',nvert, nface, 0);
 
 if nvert == ncolor 
-	vertex = [vertex';color']';
+    vertex = [vertex';color']';
 end
 if nface == ncolor && nvert ~= ncolor
-	face =[zeros(1,nface)+nvert_face; face'-1;color']';
+    face =[zeros(1,nface)+nvert_face; face'-1;color']';
 else
-	face =[zeros(1,nface)+nvert_face;face'-1]';
+    face =[zeros(1,nface)+nvert_face;face'-1]';
 end
-dlmwrite(filename,vertex,'-append',...  
+dlmwrite(filename,vertex,'-append',...
          'delimiter',' ',...
          'precision', 6,...
          'newline','pc');
-		 
-dlmwrite(filename,face,'-append',...  
+
+dlmwrite(filename,face,'-append',...
          'delimiter',' ',...
          'newline','pc');
-		 
+
 fclose(fid);
-
-end
-
