@@ -11,7 +11,7 @@ ne = mesh.ne;
 nv = mesh.nv;
 % compute harmonic function f with fixed value on two boundaries of annulus
 % f(b1) = 1, f(b2) = 0
-bds = boundary(face);
+bds = boundary2(mesh);
 b1 = bds{1};
 b2 = bds{2};
 if length(b1)<length(b2)
@@ -25,6 +25,13 @@ f = harmonic_function(mesh, f);
 df = exterior_derivative(mesh,f,0);
 % find a shortest path between two boundaries b1,b2
 cc = shortest_path(mesh,[b1(1),b2(1)]);
+% prune path
+ind = zeros(nv,1);
+ind(b1) = 1;
+ind(b2) = 2;
+i = find(ind(cc)==1,1,'last');
+j = find(ind(cc)==2,1,'first');
+cc = cc(i:j);
 % label face
 % indf == 1 indicate faces on one side of path
 % indf == -1 indicate faces on the other side

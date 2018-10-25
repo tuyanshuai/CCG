@@ -10,3 +10,4 @@ for i = 2:length(cc)
     path = [path,pathi(1:end-1)];
 end
 path = [path,cc(end)];
+path = path(:);

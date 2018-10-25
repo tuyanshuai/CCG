@@ -1,8 +1,0 @@
-function cw = conjugate_harmonic_one_form(mesh, w, hf)
-% compute conjugate harmonic 1-form of w
-if ~exist('hf','var') || isempty(hf)
-    if~e
-    hf = characteristic_one_form(mesh);
-end
-
-end

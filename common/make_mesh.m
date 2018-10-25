@@ -19,3 +19,8 @@ mesh.edge = edge;
 mesh.eif = eif;
 mesh.halfedge = he;
 mesh.heif = heif;
+
+% bd is unordered, mainly used to test if vert is on boundary
+ind = eif(:,1)>0 & eif(:,2)>0;
+bde = edge(~ind,:);
+mesh.bd = unique(bde(:));

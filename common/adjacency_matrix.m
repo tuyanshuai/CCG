@@ -1,4 +1,4 @@
-%% compute_adjacency_matrix
+%% adjacency_matrix
 % Compute adjacency matrix of triangle mesh, only connectivity needed.
 % 
 % Both undirected and directed adjacency matrix computed, stored with 
